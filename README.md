@@ -1,2 +1,2 @@
-# TIPP_reference_package
-Documentation describing the construction of TIPP reference packages 2019-2020.
+# TIPP reference packages 
+Here, we describe the procedure used to construct new version of TIPP reference packages. 
