@@ -10,10 +10,14 @@ We downloaded all Bacterial and Archael genomes from the NCBI RefSeq database. R
 For each genome accession in this master list, we download the genome sequence data, protein sequences, and nucleotide gene sequences. We modify the names of the protein and nucleotide gene sequences such that the corresponding protein and nucleotide gene sequence have same name. We also add genome accession to the start of the gene sequence, to make it possible to track the origin of the gene sequence in the database.
 For example, one of the gene sequence in ArgS (COG0018) marker gene is `GCF_002287175.1_NZ_LMVM01000012.1_cds_WP_069582217.1_1177`, which has genome accession, sequence accession, and the protein name information in it's identifier. 
 Once, we have protein and corresponding nucleotide gene sequences from a genome, we used [fetchMG](http://vm-lux.embl.de/~mende/fetchMG/about.html) tool to extract 40 marker gene sequences. Note that fetchMG uses both protein and nucleotide sequences, so keep the name of the two files same, just change the extension to .faa for proteins ana .fna for nucleotide sequences. We used fetchMG v1.0 for our analysis. \
-`fetchMG.pl -m extraction -v gene_aa_filename -o output_folder` 
+```bash
+fetchMG.pl -m extraction -v gene_aa_filename -o output_folder
+```
 
-The script get_sequences.py combines the steps of downloading genomes and extracting 40 marker genes, just run\
-`python get_sequences.py`. \
+The script get_sequences.py combines the steps of downloading genomes and extracting 40 marker genes, just run
+```bash
+python get_sequences.py
+```
 This should create an output folder with \*.fna (nucleotide gene sequences) and \*.faa (protein sequences) files for the 40 marker genes. The report.txt has metadata information for the selected gene sequences. Please look at the [output_README.txt](https://github.com/shahnidhi/TIPP_reference_package/blob/master/output_README.txt) file for column headers.  
 
 ## Filtering gene sequences
@@ -22,16 +26,18 @@ We removed all gene sequences that had a mismatch in their nucleotide and protei
 ## Alignment Estimation
 For each marker gene, we generate multiple sequence alignment (MSA) of the protein sequences using UPP software. The parameters chosen essentially generates PASTA alignments, because we have carefully chosen gene sequences such that they are almost all full-length. We used [UPP](https://github.com/smirarab/sepp/blob/master/README.UPP.md) version 4.3.10 software.
 
-`run_upp.py -s gene_aa_filename.faa -p tmp_dir  -B 1000000 -M -1 \
--T 0.33 -m amino -o output_folder`
+```bash
+run_upp.py -s gene_aa_filename.faa -p tmp_dir  -B 1000000 -M -1 \
+-T 0.33 -m amino -o output_folder
+```
 
 We used alignment with insertion sites masked (\*masked.fasta) in all subsequent steps.
 ### Translate back to DNA
 Once we generate protein MSAs, we translate the proteins back to nucleotide sequences. Because we have nucleotide sequences for each protein sequence, we use that information to match amino acid to the corresponding codon. 
-`
+```bash
 python backtranslate_refseq.py protein_alignment.fasta \
-gene_nuc_filename.fna gene_nuc_alignment.fasta output_log.txt
-`
+       gene_nuc_filename.fna gene_nuc_alignment.fasta output_log.txt
+```
 ### Remove gappy sites and fragmentary data
 We removed gappy sites from the alignment. This step is performed after translating back to DNA, so that we don't lose amino acid to codon mapping from the RefSeq files. 
 We removed all sites with 95% or more gaps.
