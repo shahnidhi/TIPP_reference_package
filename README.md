@@ -5,7 +5,6 @@ Here, we describe the procedure used to construct the new version of TIPP refere
 We downloaded all Bacterial and Archael genomes from the NCBI RefSeq database. RefSeq provides a metadata file for both Bacteria and Archaea genomes. This file contains useful information such as genome accession, taxid, name, ftp download information, etc. We downloaded these files in November 2019, and are provided in the data folder. One can download the latest version of files from
 - `wget ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt`
 - `wget ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/archaea/assembly_summary.txt`
-The list of 40 marker genes
 
 For each genome accession in this master list, we download the genome sequence data (nuc), protein sequences (aa), and cds sequences (nuc). We modify the names of the protein and cds sequences such that the corresponding protien and cds sequence have same name. We also add genome accession to the start of the gene sequence, to make it possible to track the origin of each gene sequence in the database. 
 For example, one of the gene sequence in ArgS (COG0018) marker gene is `GCF_002287175.1_NZ_LMVM01000012.1_cds_WP_069582217.1_1177`, which has genome accession, sequence accession, and the protein name information in it's identifier. 
