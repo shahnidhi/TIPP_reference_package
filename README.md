@@ -14,7 +14,7 @@ Once, we have protein and corresponding nucleotide gene sequences from a genome,
 
 The script get_sequences.py combines the step of downloading genomes and extracting 40 marker genes, just run\
 `python get_sequences.py`. \
-This should create an output folder with .fna (nucleotide gene sequences) and .faa (protein sequences) for each of the 40 marker genes. 
+This should create an output folder with .fna (nucleotide gene sequences) and .faa (protein sequences) files for each of the 40 marker genes. The report.txt has metadata information for the selected gene sequences. Please look at the [output_README.txt](https://github.com/shahnidhi/TIPP_reference_package/blob/master/output_README.txt) file for column headers.  
 
 
 
