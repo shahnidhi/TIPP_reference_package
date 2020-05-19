@@ -1,0 +1,23 @@
+#PBS -l walltime=48:00:00
+#PBS -l nodes=1:ppn=4
+#PBS -N refined_${VAR}
+#PBS -q tallis
+#PBS -j oe
+#PBS -o refined_${VAR}.out
+#PBS -e refined_${VAR}.err
+#PBS -m be
+#PBS -M nidhishahdb@gmail.com
+#
+#####################################
+
+# Load Modules
+#
+module load java
+cd ${PBS_O_WORKDIR}
+mkdir -p /projects/tallis/nidhi/reference_packages/all_seqs/clean/marker_seqs_len_filtered_genus2species/${VAR}_raxml_output/
+source /home/nidhis/.bashrc
+
+/projects/tallis/shared/bin/standard-RAxML/raxmlHPC-PTHREADS-AVX -j -m GTRCAT -F -T 4 -p 1111 -g /projects/tallis/nidhi/reference_packages/all_seqs/clean/marker_seqs_len_filtered_genus2species/${VAR}.unrefined.taxonomy.renamed -s /projects/tallis/nidhi/reference_packages/all_seqs/clean/marker_seqs_len_filtered_genus2species/${VAR}_tallis_alignment_masked_nuc.fasta.mask5sites.fasta.mask33taxa.fasta -n ${VAR}_refined -w /projects/tallis/nidhi/reference_packages/all_seqs/clean/marker_seqs_len_filtered_genus2species/${VAR}_raxml_output/
+
+
+/projects/tallis/shared/bin/standard-RAxML/raxmlHPC-PTHREADS-AVX -j -m GTRGAMMA -f e -t /projects/tallis/nidhi/reference_packages/all_seqs/clean/marker_seqs_len_filtered_genus2species/${VAR}_raxml_output/RAxML_result.${VAR}_refined -T 4 -p 1111 -s /projects/tallis/nidhi/reference_packages/all_seqs/clean/marker_seqs_len_filtered_genus2species/${VAR}_tallis_alignment_masked_nuc.fasta.mask5sites.fasta.mask33taxa.fasta -n ${VAR}_optimized -w /projects/tallis/nidhi/reference_packages/all_seqs/clean/marker_seqs_len_filtered_genus2species/${VAR}_raxml_output/

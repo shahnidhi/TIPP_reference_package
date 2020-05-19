@@ -1,0 +1,19 @@
+#PBS -l walltime=24:00:00
+#PBS -l nodes=1:ppn=4
+#PBS -N upp_${VAR}
+#PBS -q tallis
+#PBS -j oe
+#PBS -o upp_${VAR}.out
+#PBS -e upp_${VAR}.err
+#PBS -m be
+#PBS -M nidhishahdb@gmail.com
+#
+#####################################
+
+# Load Modules
+#
+module load java
+cd ${PBS_O_WORKDIR}
+source /home/nidhis/.bashrc-modified
+run_upp.py -s ${VAR} -p /projects/tallis/nidhi/tmp/  -B 1000000 -M -1 -T 0.33 -m amino -o ${OP}_tallis
+
