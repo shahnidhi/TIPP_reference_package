@@ -40,7 +40,7 @@ with open(sys.argv[2]) as f:
 
 		print (accno + ',' + taxid +',' + final_map['superkingdom'] + ',' + final_map['phylum'] + ',' + final_map['class'] + ',' + final_map['order']+ ',' + final_map['family']+ ',' + final_map['genus']+ ',' + final_map['species'])
 
-#Usage python assign_taxa_label.py  accession_list.txt assembly_summary_combined.txt > taxonomy.info
+#Usage python assign_taxa_label.py  accession_list.txt assembly_summary_refseq.txt > taxonomy.info
 
 
 
