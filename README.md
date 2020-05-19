@@ -1,5 +1,14 @@
 # TIPP reference packages 
-Here, we describe the procedure used to construct the new version of TIPP reference packages. We used the same set of 40 marker genes as used by Mende et al. 2013, Sunagawa et al. 2013, and mOTUs. These marker genes are believed to be single-copy and universally present in prokaryotic genomes. 
+
+## Quick Links
+- TIPP paper - [https://doi.org/10.1093/bioinformatics/btu721](https://doi.org/10.1093/bioinformatics/btu721)
+- TIPP software can be found [here](https://github.com/smirarab/sepp/blob/master/README.TIPP.md).
+- TIPP reference dataset (2014) - https://github.com/tandyw/tipp-reference/releases/download/v2.0.0/tipp.zip
+- **(New)** TIPP reference dataset (2020) - ADD LINK
+- **(New)** Sparse TIPP reference dataset 1 (2020); contains only one sequence per species - ADD LINK
+- **(New)** Sparse TIPP reference dataset 1 (2020); contains only two sequences per genus - ADD LINK
+
+In this document, we describe the protocol used to construct a new version of [TIPP](https://doi.org/10.1093/bioinformatics/btu721) reference packages. We used the same set of 40 marker genes as used by Mende et al. 2013, Sunagawa et al. 2013, and mOTUs. These marker genes are believed to be single-copy and universally present in prokaryotic genomes. 
 
 ## Data sources
 We downloaded all Bacterial and Archael genomes from the NCBI RefSeq database. RefSeq provides a metadata file for both Bacteria and Archaea genomes. This file contains useful information such as genome accession, taxid, name, ftp download information, etc. We downloaded these files in November 2019,, and are provided in the data folder. One can download the latest version of files from
