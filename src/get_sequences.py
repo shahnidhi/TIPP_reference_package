@@ -16,6 +16,7 @@ def fasta_iter(fasta_name):
 def main():
 	os.system("mkdir -p output")
 	final_fr = open('output/report.txt', 'w')
+	final_reprocess = open('output/reprocess_accessions.txt', 'w')
 	final_fr.write('#seq_id\taccession\tprotein_name\tlen_gene_nuc\tlen_gene_aa\tnuc_len_match_aa_len\tncbi_taxid\tftp_link\tgene_header_in_refseq\tis_bacteria?\n')
 	cognames = {}
 	with open('data/FetchMG_COGid2gene_name.tsv') as f:
@@ -35,6 +36,7 @@ def main():
 	for bac_arc_ind, refseq_file in enumerate(file_accession):
 		with open(refseq_file) as f:
 			for num, line in enumerate(f):
+				flag2reprocess = False
 				val = line.strip().split('\t')
 				if line.startswith('#'):
 					continue
@@ -43,7 +45,7 @@ def main():
 				speciestaxid = val[6]
 				ftp = val[19]
 				trailname = ftp.split('/')[-1]
-				#Download genome sequence (nucleotide), protien sequences (aa), and cds sequences (nucleotide) for each genome accession
+				#Download protien sequences (aa), and cds sequences (nucleotide) for each genome accession
 				cdsfilename = trailname + "_cds_from_genomic.fna"
 				proteinfilename = trailname + "_protein.faa"
 
@@ -51,17 +53,33 @@ def main():
 				proteinftp = ftp + '/' + proteinfilename + ".gz"
 				downloadcds = "wget " + cdsftp	
 				downloadprotein = "wget " + proteinftp
-				try:
-					if (os.path.exists(cdsfilename) == False):
+				if (os.path.exists(cdsfilename) == False):
+					try:
 						os.system(downloadcds)
-						os.system("gunzip -f " + cdsfilename + ".gz")
-					if (os.path.exists(proteinfilename) == False):
+					except Exception as e:
+						flag2reprocess = True
+						print ("failed downloading cds file for: ", accession) 
+					if (os.path.exists(cdsfilename+'.gz') == True):
+						try:
+							os.system("gunzip -f " + cdsfilename + ".gz")
+						except Exception as e:
+							print ("failed downloading and unzipping cds file for: ", accession)
+							flag2reprocess = True
+				if (os.path.exists(proteinfilename) == False):
+					try:
 						os.system(downloadprotein)
-						os.system("gunzip -f " + proteinfilename + ".gz")
-				except Exception as e:
-					print ("failed downloading", accession)
+					except Exception as e:
+						print ("failed downloading protein file for: ", accession)
+						flag2reprocess = True 
+					if (os.path.exists(proteinfilename+'.gz') == True):
+						try:
+							os.system("gunzip -f " + proteinfilename + ".gz")
+						except Exception as e:
+							print ("failed downloading and unzipping protein file for: ", accession)
+							flag2reprocess = True
+				if flag2reprocess:
+					final_reprocess.write(line.strip()+'\n')
 					continue
-
 				proteinseqmap = {}
 				fiter = fasta_iter(proteinfilename)
 				for ff in fiter:
