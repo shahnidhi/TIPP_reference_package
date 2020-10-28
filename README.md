@@ -4,9 +4,11 @@
 - TIPP paper - [https://doi.org/10.1093/bioinformatics/btu721](https://doi.org/10.1093/bioinformatics/btu721)
 - TIPP software can be found [here](https://github.com/smirarab/sepp/blob/master/README.TIPP.md).
 - TIPP reference dataset (2014) - https://github.com/tandyw/tipp-reference/releases/download/v2.0.0/tipp.zip
-- **(New)** TIPP reference dataset (2020) - ADD LINK
+- **(New)** TIPP reference dataset (2020) - https://obj.umiacs.umd.edu/tipp/tipp2-refpkg.tar.gz 
+<!---
 - **(New)** Sparse TIPP reference dataset 1 (2020); contains only one sequence per species - ADD LINK
 - **(New)** Sparse TIPP reference dataset 1 (2020); contains only two sequences per genus - ADD LINK
+--->
 
 In this document, we describe the protocol used to construct a new version of [TIPP](https://doi.org/10.1093/bioinformatics/btu721) reference packages. We used the same set of 40 marker genes as used by Mende et al. 2013, Sunagawa et al. 2013, and mOTUs. These marker genes are believed to be single-copy and universally present in prokaryotic genomes. 
 
