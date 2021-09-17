@@ -64,8 +64,7 @@ taxapercent=33
 m2=`echo $( cat $f.mask${percent}sites.fasta|wc -L ) \* $taxapercent / 100 |bc`
 run_seqtools.py -infile $f.mask${percent}sites.fasta -filterfragments $m2 -outfile $out
 ```
-## Gene Tree Estimation and Refining The Taxonomy
-### Generate Unrefined taxonomy
+### Cleanup taxids
 Based on Refseq metadata file, we have taxid for each genome sequence. However, sometimes NCBI taxid gets depreciated, merged, or updated. To get the latest taxid and the complete NCBI lineage for each gene sequence, we run the following steps. We rely heavily on [Taxtastic](http://fhcrc.github.io/taxtastic/) v0.8.11 software. 
 ```bash
 python generate_species_mapping.py gene_nuc_alignment.fna species.mapping
@@ -82,8 +81,15 @@ perl build_unrefined_tree.pl species.updated.mapping \
      unrefined.taxonomy unrefined.taxonomy.renamed
 ```
 The output of “taxit taxtable” is a table with all the taxonomic ranks organized. This will be later used in computing taxonomic profile. 
-### Generate Refined taxonomy
+### Generate taxonomy
+We used GTRGAMMA model of [RAxML](https://github.com/stamatak/standard-RAxML) (version 8.2.12) to generate taxonomy for each marker gene.
+```bash
+raxmlHPC-PTHREADS-AVX -j -m GTRGAMMA -f e -T 4 -p 1111 -g unrefined.taxonomy.renamed -s gene_nuc_alignment.fasta -n unrefined_optimized -w ${work}/raxml_output
+```
+<!---
+This section just tracks how to create refined taxonomic trees.
 We used GTRCAT and GTRGAMMA model of [RAxML](https://github.com/stamatak/standard-RAxML) (version 8.2.12) to generate refined taxonomy for each marker gene. 
+
 ```bash
 raxmlHPC-PTHREADS-AVX -j -m GTRCAT -F -T 4 -p 1111 -g unrefined.taxonomy.renamed \
            -s gene_nuc_alignment.fasta -n refined -w ${work}/raxml_output/
@@ -91,6 +97,8 @@ raxmlHPC-PTHREADS-AVX -j -m GTRCAT -F -T 4 -p 1111 -g unrefined.taxonomy.renamed
 raxmlHPC-PTHREADS-AVX -j -m GTRGAMMA -f e -t RAxML_result.refined -T 4 -p 1111 \
            -s gene_nuc_alignment.fasta -n optimized -w ${work}/raxml_output
 ```
+--->
+<!--- 
 ### Generate ML gene trees
 We also generate a maximum likelihood gene tree for each marker gene. 
 ```bash
@@ -100,6 +108,7 @@ raxmlHPC-PTHREADS-AVX -j -m GTRCAT -F -T 4 -p 1111 \
 raxmlHPC-PTHREADS-AVX -j -m GTRGAMMA -f e -t RAxML_result.mlgene -T 4 -p 1111 \ 
          -s gene_nuc_alignment.fasta -n optimized -w ${work}/raxml_output_mlgene/
 ```
+--->
 ## Databases: BLAST
 We concatenate all gene sequences (nucleotide) from all marker genes to create a combined fasta file, and a sequence to marker mapping file (seq2marker.tab).
 We used [BLAST+](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download) (v 2.9.0) to create database files.
